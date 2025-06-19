@@ -2,19 +2,31 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.6' // Or whatever Maven version is configured in Jenkins
+        maven 'Maven 3.9.6' // Make sure Jenkins has Maven installed and named exactly this
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/srikant-h/CICD-login.git' // ⛔ Replace with your real repo URL
+                git 'https://github.com/srikant-h/CICD-login.git'
             }
         }
 
-        stage('Build & Run Tests') {
+        stage('Build with Docker') {
             steps {
-                sh 'mvn clean test'
+                script {
+                    dockerImage = docker.build("selenium-login-ci")
+                }
+            }
+        }
+
+        stage('Run Tests inside Docker') {
+            steps {
+                script {
+                    dockerImage.inside('--shm-size=1g') {
+                        sh 'mvn test'
+                    }
+                }
             }
         }
     }
@@ -25,3 +37,4 @@ pipeline {
         }
     }
 }
+
