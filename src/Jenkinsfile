@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/your-username/your-repo.git' // ⛔ Replace with your real repo URL
+                git 'https://github.com/srikant-h/CICD-login.git' // ⛔ Replace with your real repo URL
             }
         }
 
