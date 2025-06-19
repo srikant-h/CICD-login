@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven 3.9.6' // Or whatever Maven version is configured in Jenkins
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/your-username/your-repo.git' // ⛔ Replace with your real repo URL
+            }
+        }
+
+        stage('Build & Run Tests') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+        }
+    }
+}
