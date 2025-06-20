@@ -20,7 +20,6 @@
             <version>5.8.0</version>
         </dependency>
 
-
         <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
@@ -36,6 +35,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
                 <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                     <suiteXmlFiles>
                         <suiteXmlFile>testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
