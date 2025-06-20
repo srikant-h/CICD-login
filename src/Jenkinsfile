@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.6' // Make sure Jenkins has Maven installed and named exactly this
+        maven 'Maven 3.9.6'
     }
 
     stages {
@@ -12,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Build with Docker') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     dockerImage = docker.build("selenium-login-ci")
@@ -20,11 +20,11 @@ pipeline {
             }
         }
 
-        stage('Run Tests inside Docker') {
+        stage('Run Tests in Docker') {
             steps {
                 script {
                     dockerImage.inside('--shm-size=1g') {
-                        sh 'mvn test'
+                        sh 'mvn -B test'
                     }
                 }
             }
@@ -33,8 +33,8 @@ pipeline {
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
+            echo "Publishing test results..."
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
         }
     }
 }
-
